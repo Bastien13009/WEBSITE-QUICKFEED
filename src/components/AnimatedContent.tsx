@@ -55,12 +55,14 @@ const AnimatedContent = ({
     const el = ref.current;
     if (!el) return;
 
-    let scrollerTarget: Element | null =
+    let scrollerTarget: Element | string | null =
       container || document.getElementById("snap-main-container") || null;
 
     if (typeof scrollerTarget === "string") {
       scrollerTarget = document.querySelector(scrollerTarget);
     }
+
+    const scrollEl = scrollerTarget instanceof Element ? scrollerTarget : undefined;
 
     const axis = direction === "horizontal" ? "x" : "y";
     const offset = reverse ? -distance : distance;
@@ -102,7 +104,7 @@ const AnimatedContent = ({
 
     const st = ScrollTrigger.create({
       trigger: el,
-      scroller: scrollerTarget as string | Element | undefined,
+      scroller: scrollEl,
       start: `top ${startPct}%`,
       once: true,
       onEnter: () => tl.play(),
